@@ -26,14 +26,21 @@ export default class App extends React.Component {
 
   handleClick = (buttonName) => {
     const result = calculate(this.state, buttonName);
-
     const isEqualsPressed = buttonName === "=";
+    const scientificOps = ["sin", "cos", "tan", "log", "√"];
 
     if (isEqualsPressed && this.state.next && this.state.operation && this.state.total) {
       const equation = `${this.state.total} ${this.state.operation} ${this.state.next} = ${result.total}`;
       this.setState({
         ...result,
-        history: [`${equation}`, ...this.state.history],
+        history: [equation, ...this.state.history],
+      });
+    } else if (scientificOps.includes(buttonName)) {
+      const input = this.state.next || this.state.total || "0";
+      const equation = `${buttonName}(${input}) = ${result.total}`;
+      this.setState({
+        ...result,
+        history: [equation, ...this.state.history],
       });
     } else {
       this.setState(result);
@@ -49,14 +56,22 @@ export default class App extends React.Component {
 
     return (
       <div className={`component-app ${themeClass}`}>
-        <button onClick={this.toggleTheme} className="theme-toggle">
-          Toggle Theme
-        </button>
-        <button onClick={this.toggleScientificMode} className="scientific-toggle">
-          Scientific Mode: {this.state.isScientificMode ? "ON" : "OFF"}
-        </button>
+        <div className="top-bar">
+          <button onClick={this.toggleScientificMode} className="scientific-toggle">
+            Scientific Mode: {this.state.isScientificMode ? "ON" : "OFF"}
+          </button>
+          <button onClick={this.toggleTheme} className="theme-toggle">
+            Toggle Theme
+          </button>
+        </div>
+
         <Display value={this.state.next || this.state.total || "0"} />
-        <ButtonPanel clickHandler={this.handleClick} isScientificMode={this.state.isScientificMode} />
+
+        <ButtonPanel
+          clickHandler={this.handleClick}
+          isScientificMode={this.state.isScientificMode}
+        />
+
         <div className="history">
           <h2>Calculation History</h2>
           <ul>

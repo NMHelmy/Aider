@@ -1,14 +1,16 @@
-.component-button-panel {
-  background-color: #858694;
+.button-row {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  flex: 1 0 auto;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
 }
 
-.component-button-panel > div {
-  width: 100%;
-  margin-bottom: 1px;
-  flex: 1 0 auto;
+.button-row .component-button {
+  flex: 1;
   display: flex;
+  justify-content: center;
+}
+
+.button-row .component-button.wide {
+  flex: 2;
 }
